@@ -140,12 +140,12 @@ class S3
      * @param bool $bucket
      * @return array|bool
      */
-    public static function listFiles($bucket = false)
+    public static function listFiles($uri = '', $bucket = false)
     {
         self::$request = [
             'method' => 'GET',
             'bucket' => ($bucket) ? $bucket : self::getBucket(),
-            'uri'    => ''
+            'uri'    => $uri
         ];
 
         $response = self::getResponse();

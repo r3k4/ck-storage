@@ -5,9 +5,9 @@ namespace Reka\S3\App;
 class Files extends Api 
 {
 
-	public function getAllFiles()
+	public function getAllFiles($uri = '')
 	{		
-		$result = $this->connect()->listFiles();
+		$result = $this->connect()->listFiles($uri);
 		return collect($result);
 	}
 
