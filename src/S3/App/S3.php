@@ -154,15 +154,14 @@ class S3
             return false;
         }
 
-        $xml_response = simplexml_load_string($response['message']);
-
         $results = [];
-        foreach ($xml_response->Contents as $b) {
-            $results[] = (string)$b->Key;
+        if($response['message'] != ""){
+            $xml_response = simplexml_load_string($response['message']);
+            foreach ($xml_response->Contents as $b) {
+                $results[] = (string)$b->Key;
+            }
         }
-
-        return $results;
-
+       return $results; 
     }
 
     /**
