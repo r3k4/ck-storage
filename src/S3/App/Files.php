@@ -16,7 +16,7 @@ class Files extends Api
 	 * @param  [string] $uri 
 	 * @return [string]      
 	 */
-	public function deleteObject($uri)
+	public function deleteObject($uri, $bucket = false)
 	{
         $this->request = [
             'method' => 'DELETE',
