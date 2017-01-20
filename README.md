@@ -51,8 +51,6 @@ CK_CUSTOM_DOMAIN=
 ```
 atau anda juga dapat langsung melakukan konfigurasi di file cloudkilatstorage.php di folder config seperti kode berikut.
 ```php
-'end_point_api' => 'isi_base_url_api_akun_anda_disini',
-'api_key' => 'isi_api_key_anda_disini',
 'secretKey' => 'isi secretKey api akun anda di sini'
 'accessKey' => 'isi accessKey api akun anda di sini'
 'bucket' => 'isi bucket di sini'
