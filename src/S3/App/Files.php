@@ -18,7 +18,7 @@ class Files extends Api
 	 */
 	public function deleteFile($uri)
 	{
-		return S3::deleteObject($uri);
+		return $this->connect()->deleteObject($uri);
 	}
 
 
