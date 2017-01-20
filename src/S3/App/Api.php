@@ -57,7 +57,7 @@ abstract class Api
 	{
 		S3::setAuth($this->accessKey, $this->secretKey);
 		S3::setBucket($this->bucket);
-		return new S3;
+		return $this;
 	}
 
     protected function hasAuth()
