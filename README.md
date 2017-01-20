@@ -67,7 +67,7 @@ $data = KilatStorage::Files()->getAllFiles();
 ```
 Delete object yg ada pada bucket
 ```php
-$data = KilatStorage::Files()->deleteFile($uri);
+$data = KilatStorage::Files()->deleteObject($uri);
 ```
 Menampilkan nama file dari full path yg ada di uri
 ```php

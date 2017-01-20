@@ -12,13 +12,18 @@ class Files extends Api
 	}
 
 	/**
-	 * hapus file yg ada di uri
+	 * hapus object yg ada di uri
 	 * @param  [string] $uri 
 	 * @return [string]      
 	 */
-	public function deleteFile($uri)
+	public function deleteObject($uri)
 	{
-		return $this->connect()->deleteObject($uri);
+        $this->request = [
+            'method' => 'DELETE',
+            'bucket' => ($bucket) ? $bucket : $this->getBucket(),
+            'uri'    => $uri
+        ];
+		return $this->connect()->getResponse();
 	}
 
 
