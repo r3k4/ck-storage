@@ -15,7 +15,7 @@
     ],
     "autoload": {
         "psr-4": {
-          "Reka\\": "src/S3"
+          "Reka\\S3\\": "src/S3"
         }
     },    
     "require": {
