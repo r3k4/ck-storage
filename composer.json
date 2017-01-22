@@ -14,11 +14,15 @@
         }
     ],
     "autoload": {
+        "files": [
+            "src/helpers.php"
+        ],        
         "psr-4": {
           "Reka\\S3\\": "src/S3"
         }
     },    
     "require": {
-       "php": ">=5.5.0"
+       "php": ">=5.5.0",
+       "illuminate/support": "5.*"
     }
 }
