@@ -22,5 +22,10 @@ class Url extends Api
 		return $host;
 	}
 
+	public function generate($uri = '')
+	{
+		return $this->baseUrl().'/'.$uri;
+	}
+
 
 }
