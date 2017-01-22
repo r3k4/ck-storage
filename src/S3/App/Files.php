@@ -7,7 +7,7 @@ class Files extends Api
 
 	public function getAllFiles($uri = '')
 	{		
-		$result = $this->connect()->listFiles($uri);
+		$result = $this->listFiles($uri);
 		return collect($result);
 	}
 
@@ -23,8 +23,16 @@ class Files extends Api
             'bucket' => ($bucket) ? $bucket : $this->getBucket(),
             'uri'    => $uri
         ];
-		return $this->connect()->getResponse();
+		return $this->getResponse();
 	}
+
+ 
+
+    public function putObject($file, $uri, $requestHeaders = [])
+    {
+
+    	$this->put($file, $uri, $requestHeaders = []);
+    }	
 
 
 	/**

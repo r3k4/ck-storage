@@ -48,6 +48,8 @@ abstract class Api
 		$this->secretKey = config('cloudkilatstorage.secretKey', '');
 		$this->bucket = config('cloudkilatstorage.bucket', '');
 		$this->custom_domain = config('cloudkilatstorage.custom_domain', '');
+        $this->urlhttps = 'https://'.config('cloudkilatstorage.endpoint');
+        $this->urlhttp = 'http://'.config('cloudkilatstorage.endpoint');        
 
 		$this->storage = self::STORAGE_CLASS_STANDARD;
 		$this->acl = self::ACL_PUBLIC_READ;
@@ -62,7 +64,7 @@ abstract class Api
 
     protected function hasAuth()
     {
-        return ($this->accessKey !== null && $this->$secretKey !== null);
+        return ($this->accessKey !== null && $this->secretKey !== null);
     }
 
     protected function getResponse($sourcefile = false, $headers = [])
@@ -84,7 +86,7 @@ abstract class Api
             'Host'                => $this->endpoint,
             'x-amz-storage-class' => $this->storage,
             'x-amz-acl'           => $this->acl
-        ], $headers, $this->$defaultHeaders);
+        ], $headers, $this->defaultHeaders);
 
         $resource = $uri;
         if ($bucket !== '') {
@@ -180,8 +182,8 @@ abstract class Api
         $response['message'] = $data;
         $response['url'] = [
             'default' => $url,
-            'http'    => $this->$urlhttp . $uri,
-            'https'   => $this->$urlhttps . $uri
+            'http'    => $this->urlhttp . $uri,
+            'https'   => $this->urlhttps . $uri
         ];
 
         @curl_close($curl);
@@ -300,13 +302,71 @@ abstract class Api
 
     protected function getSignature($string)
     {
-        return 'AWS ' . $this->$accessKey . ':' . $this->getHash($string);
+        return 'AWS ' . $this->accessKey . ':' . $this->getHash($string);
     }
 
 
-    protected function getBucket()
+ 
+
+    public function listFiles($uri = '', $bucket = false)
     {
-        return $this->bucket;
+        $this->request = [
+            'method' => 'GET',
+            'bucket' => ($bucket) ? $bucket : $this->bucket,
+            'uri'    => $uri
+        ];
+
+        $response = $this->getResponse();
+
+        if ($response['error']) {
+            return false;
+        }
+
+        $results = [];
+        if($response['message'] != ""){
+            $xml_response = simplexml_load_string($response['message']);
+            foreach ($xml_response->Contents as $b) {
+                $results[] = (string)$b->Key;
+            }
+        }
+       return $results; 
     }
+
+    private function sortAmzHeaders($a, $b)
+    {
+        $lenA = strpos($a, ':');
+        $lenB = strpos($b, ':');
+        $minLen = min($lenA, $lenB);
+        $ncmp = strncmp($a, $b, $minLen);
+        if ($lenA == $lenB) {
+            return $ncmp;
+        }
+        if (0 == $ncmp) {
+            return $lenA < $lenB ? -1 : 1;
+        }
+        return $ncmp;
+    }
+
+    private function getHash($string)
+    {
+        return base64_encode(extension_loaded('hash') ?
+            hash_hmac('sha1', $string, $this->secretKey, true) : pack('H*', sha1(
+                (str_pad($this->secretKey, 64, chr(0x00)) ^ (str_repeat(chr(0x5c), 64))) .
+                pack('H*', sha1((str_pad($this->secretKey, 64, chr(0x00)) ^
+                        (str_repeat(chr(0x36), 64))) . $string)))));
+    }
+
+
+    public function put($file, $uri, $requestHeaders = [])
+    {
+
+        $this->request = [
+            'method' => 'PUT',
+            'bucket' => $this->bucket,
+            'uri'    => $uri
+        ];
+        return $this->getResponse($file, $requestHeaders);
+    }   
+
 
 }

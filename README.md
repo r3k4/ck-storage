@@ -54,7 +54,7 @@ atau anda juga dapat langsung melakukan konfigurasi di file cloudkilatstorage.ph
 'secretKey' => 'isi secretKey api akun anda di sini'
 'accessKey' => 'isi accessKey api akun anda di sini'
 'bucket' => 'isi bucket di sini'
-'endpoint' => 'isi dgn http://kilatstorage.com'
+'endpoint' => 'isi dgn kilatstorage.com'
 'custom_domain' => 'boleh dikosongkan'
 
 ```
