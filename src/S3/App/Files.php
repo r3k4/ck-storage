@@ -20,7 +20,7 @@ class Files extends Api
 	{
         $this->request = [
             'method' => 'DELETE',
-            'bucket' => ($bucket) ? $bucket : $this->getBucket(),
+            'bucket' => ($bucket) ? $bucket : $this->bucket,
             'uri'    => $uri
         ];
 		return $this->getResponse();
